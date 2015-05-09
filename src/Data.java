@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 
 import javax.print.attribute.IntegerSyntax;
@@ -9,6 +11,7 @@ import javax.print.attribute.IntegerSyntax;
  */
 class Data{
     // the filename of the data
+	private String ENCODING = "utf-8";
     private String filename;
 
     private HashMap<String, Integer> statesPairsAppearingTimes = // 两个tag先后出现的额次数
@@ -42,12 +45,25 @@ class Data{
      */
     private void process(){
         try{
-            FileReader reader = new FileReader(filename);
-            BufferedReader br = new BufferedReader(reader);
+            BufferedReader br = new BufferedReader(new InputStreamReader(  
+                    new FileInputStream(filename), ENCODING));
             String line;
             while((line = br.readLine()) != null){
 //                System.out.println(line);
-                String[] pairs = line.split("  ");
+            	// 处理双空格和单个空格
+            	Pattern p = Pattern.compile("\\s+");
+            	Matcher m = p.matcher(line);
+            	line = m.replaceAll("#");
+                // 处理 [ 符号带来的问题
+                p = Pattern.compile("\\[");
+                m = p.matcher(line);
+                line = m.replaceAll("");
+                // 处理] 符号带来的问题
+                p = Pattern.compile("].*?#");
+                m = p.matcher(line);
+                line = m.replaceAll("#");
+                
+                String[] pairs = line.split("#");
                 for (int i=1; i < pairs.length; i++){
 //                    System.out.println(pairs[i]);
                     countbiGramHMM(i-1, pairs);
@@ -60,9 +76,8 @@ class Data{
                 }
             }
             br.close();
-            reader.close();
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         calcConfusionMatrix();
@@ -188,5 +203,29 @@ class Data{
             transformMatrix.put(word, wordTransformationMatrix);
             
     	}
+    }
+    
+    /*
+     * 写入到文件
+     */
+    public void saveToFile(){
+    	// confusionMatrix 
+    	String confusionMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\confusion_matrix.txt";
+    	try {
+			BufferedWriter confusionMatrixWriter = 
+					new BufferedWriter(new FileWriter(confusionMatrixFileName));
+			for(Map.Entry<String, Double> entry: confusionMatrix.entrySet()){
+				String pair = entry.getKey();
+				double value = entry.getValue();
+				confusionMatrixWriter.write(pair + ":" + value + "\n");
+			}
+			confusionMatrixWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    	
+    	// transformMatrix
+    	
     }
 }
