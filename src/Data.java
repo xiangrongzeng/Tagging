@@ -226,6 +226,26 @@ class Data{
 		} 
     	
     	// transformMatrix
-    	
+    	String transformMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\transform_matrix.txt";
+    	try {
+			BufferedWriter transformMatrixWriter = 
+					new BufferedWriter(new FileWriter(transformMatrixFileName));
+			for(Map.Entry<String, HashMap<String, Double>> entry: 
+				transformMatrix.entrySet()){
+				String word = entry.getKey();
+				HashMap<String, Double> tags = entry.getValue();
+				String writeLine = word ;
+				for(Map.Entry<String, Double> tagEntry: tags.entrySet()){
+					String tag = tagEntry.getKey();
+					Double value = tagEntry.getValue();
+					writeLine += "," + tag + ":" + value;
+				}					
+				transformMatrixWriter.write(writeLine + "\n");
+			}
+			transformMatrixWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     }
 }
