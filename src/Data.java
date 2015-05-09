@@ -128,7 +128,7 @@ class Data{
     }
     
     /*
-     * 加一平滑
+     * 计算混淆矩阵
      */
     private void calcConfusionMatrix(){
     	countAppearingStatesPairsTimes();
@@ -179,6 +179,9 @@ class Data{
         wordStatePairsAppearingTimes.put(word,wordTransformMatrix);
     }
     
+    /*
+     * 计算状态转移矩阵
+     */
     private void calcTransformMatrix(){
     	for(Map.Entry<String, HashMap<String, Integer>> entry: 
     		wordStatePairsAppearingTimes.entrySet()){
