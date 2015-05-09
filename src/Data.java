@@ -148,7 +148,7 @@ class Data{
                 int statesNumber = statesAppearingTimes.size();
                 int modifiedStatesPairTimes = (statesNumber - appearingStatesPairsTimes.get(tag))
                 		+ statesAppearingTimes.get(tag);
-                double posibility = -Math.log(1.0*statesPairTimes/modifiedStatesPairTimes);
+                double posibility = Math.pow(Math.E, (1.0*statesPairTimes/modifiedStatesPairTimes));
                 // 存入map
                 confusionMatrix.put(statesPair, posibility);
                 
@@ -184,18 +184,15 @@ class Data{
     		wordStatePairsAppearingTimes.entrySet()){
             String word = entry.getKey();
             HashMap<String, Integer> tagsAppearingTimes = entry.getValue();
-            // 词出现的次数
-            int wordAppearingTimes = 0;
-            for(Map.Entry<String, Integer> tagEntry: tagsAppearingTimes.entrySet()){
-            	wordAppearingTimes += tagEntry.getValue();
-            }
-            // 对词计算概率出现每一种tag的概率
+            
+            // 对词计算概率出现每一种tag的概率p(word|tag)
             HashMap<String, Double> wordTransformationMatrix = 
             		new HashMap<String, Double>();
             for(Map.Entry<String, Integer> tagEntry: tagsAppearingTimes.entrySet()){
             	String tag = tagEntry.getKey();
-            	int tagAppearingTimes = tagEntry.getValue();
-            	double value = 1/(tagAppearingTimes*1.0/ wordAppearingTimes);
+            	int wordTagAppearingTimes = tagEntry.getValue();
+            	int tagAppearingTimes = statesAppearingTimes.get(tag);
+            	double value = Math.pow(Math.E, (wordTagAppearingTimes*1.0/ tagAppearingTimes));
             	wordTransformationMatrix.put(tag, value);
 //System.out.println(tagAppearingTimes + " / " +wordAppearingTimes);
             }
