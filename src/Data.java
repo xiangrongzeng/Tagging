@@ -148,7 +148,7 @@ class Data{
                 int statesNumber = statesAppearingTimes.size();
                 int modifiedStatesPairTimes = (statesNumber - appearingStatesPairsTimes.get(tag))
                 		+ statesAppearingTimes.get(tag);
-                double posibility = Math.pow(Math.E, (1.0*statesPairTimes/modifiedStatesPairTimes));
+                double posibility = Math.log(1.0*statesPairTimes/modifiedStatesPairTimes);
                 // 存入map
                 confusionMatrix.put(statesPair, posibility);
                 
@@ -195,7 +195,7 @@ class Data{
             	String tag = tagEntry.getKey();
             	int wordTagAppearingTimes = tagEntry.getValue();
             	int tagAppearingTimes = statesAppearingTimes.get(tag);
-            	double value = Math.pow(Math.E, (wordTagAppearingTimes*1.0/ tagAppearingTimes));
+            	double value = Math.log(wordTagAppearingTimes*1.0/ tagAppearingTimes);
             	wordTransformationMatrix.put(tag, value);
 //System.out.println(tagAppearingTimes + " / " +wordAppearingTimes);
             }
