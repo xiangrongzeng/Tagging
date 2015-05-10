@@ -30,7 +30,6 @@ class Data{
    
     public Data(String filename){
         this.filename = filename;
-        process();
     }
 
     public HashMap<String, Double> getConfusionMatrix(){
@@ -43,7 +42,7 @@ class Data{
     /**
      * @note 閫愯璇诲叆鏁版嵁,骞惰皟鐢ㄥ叾瀹冨嚱鏁板鐞嗚琛屾暟鎹�
      */
-    private void process(){
+    public void process(){
         try{
             BufferedReader br = new BufferedReader(new InputStreamReader(  
                     new FileInputStream(filename), ENCODING));
