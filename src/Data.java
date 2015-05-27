@@ -208,11 +208,11 @@ class Data{
      * 写入到文件
      */
     public void saveToFile(){
-    	// confusionMatrix 
-    	String confusionMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\confusion_matrix.txt";
+    	// transformMatrix
+    	String transformMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\transform_matrix.txt";
     	try {
 			BufferedWriter confusionMatrixWriter = 
-					new BufferedWriter(new FileWriter(confusionMatrixFileName));
+					new BufferedWriter(new FileWriter(transformMatrixFileName));
 			for(Map.Entry<String, Double> entry: transformMatrix.entrySet()){
 				String pair = entry.getKey();
 				double value = entry.getValue();
@@ -223,12 +223,12 @@ class Data{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-    	
-    	// transformMatrix
-    	String transformMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\transform_matrix.txt";
+
+    	// confusionMatrix 
+    	String confusionMatrixFileName = "c:\\Users\\sunder\\Documents\\eclipse\\workspace\\tagging\\data\\confusion_matrix.txt";
     	try {
 			BufferedWriter transformMatrixWriter = 
-					new BufferedWriter(new FileWriter(transformMatrixFileName));
+					new BufferedWriter(new FileWriter(confusionMatrixFileName));
 			for(Map.Entry<String, HashMap<String, Double>> entry: 
 				confusionMatrix.entrySet()){
 				String word = entry.getKey();
