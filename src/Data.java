@@ -20,23 +20,23 @@ class Data{
         new HashMap<String, Integer>();
     private HashMap<String, Integer> appearingStatesPairsTimes = // 某状态的以自己开始的状态对出现过的对数
         new HashMap<String, Integer>();
-    private HashMap<String, Double> confusionMatrix = // 一个状态转移到另一个状态的概率
+    private HashMap<String, Double> transformMatrix = // 一个状态转移到另一个状态的概率
         new HashMap<String, Double>();
     
     private HashMap<String, HashMap<String, Integer>> wordStatePairsAppearingTimes = // 词/词性 对出现的次数
     	new HashMap<String, HashMap<String, Integer>>();
-    private HashMap<String, HashMap<String, Double>> transformMatrix = // 词选择某一词性（状态）的概率
+    private HashMap<String, HashMap<String, Double>> confusionMatrix = // 词性选择某一词的概率
         new HashMap<String, HashMap<String, Double>>();
    
     public Data(String filename){
         this.filename = filename;
     }
 
-    public HashMap<String, Double> getConfusionMatrix(){
-    	return confusionMatrix;
-    }
-    public HashMap<String, HashMap<String, Double>> getTransformMatrix(){
+    public HashMap<String, Double> getTransformMatrix(){
     	return transformMatrix;
+    }
+    public HashMap<String, HashMap<String, Double>> getConfusionMatrix(){
+    	return confusionMatrix;
     }
     
     /**
@@ -87,7 +87,7 @@ class Data{
     }
        
     /*
-     * 二阶马尔科夫
+     * 一阶马尔科夫
      */
     private void countbiGramHMM(int position, String[] pairs){
         String currentPair = pairs[position + 1];
@@ -129,7 +129,7 @@ class Data{
     /*
      * 计算混淆矩阵
      */
-    private void calcConfusionMatrix(){
+    private void calcTransformMatrix(){
     	countAppearingStatesPairsTimes();
         for(Map.Entry<String, Integer> entry: statesAppearingTimes.entrySet()){
             String tag = entry.getKey();
@@ -149,7 +149,7 @@ class Data{
                 		+ statesAppearingTimes.get(tag);
                 double posibility = Math.log(1.0*statesPairTimes/modifiedStatesPairTimes);
                 // 存入map
-                confusionMatrix.put(statesPair, posibility);
+                transformMatrix.put(statesPair, posibility);
                 
             }
         }
@@ -181,7 +181,7 @@ class Data{
     /*
      * 计算状态转移矩阵
      */
-    private void calcTransformMatrix(){
+    private void calcConfusionMatrix(){
     	for(Map.Entry<String, HashMap<String, Integer>> entry: 
     		wordStatePairsAppearingTimes.entrySet()){
             String word = entry.getKey();
@@ -199,7 +199,7 @@ class Data{
 //System.out.println(tagAppearingTimes + " / " +wordAppearingTimes);
             }
             // 保存
-            transformMatrix.put(word, wordTransformationMatrix);
+            confusionMatrix.put(word, wordTransformationMatrix);
             
     	}
     }
@@ -213,7 +213,7 @@ class Data{
     	try {
 			BufferedWriter confusionMatrixWriter = 
 					new BufferedWriter(new FileWriter(confusionMatrixFileName));
-			for(Map.Entry<String, Double> entry: confusionMatrix.entrySet()){
+			for(Map.Entry<String, Double> entry: transformMatrix.entrySet()){
 				String pair = entry.getKey();
 				double value = entry.getValue();
 				confusionMatrixWriter.write(pair + ":" + value + "\n");
@@ -230,7 +230,7 @@ class Data{
 			BufferedWriter transformMatrixWriter = 
 					new BufferedWriter(new FileWriter(transformMatrixFileName));
 			for(Map.Entry<String, HashMap<String, Double>> entry: 
-				transformMatrix.entrySet()){
+				confusionMatrix.entrySet()){
 				String word = entry.getKey();
 				HashMap<String, Double> tags = entry.getValue();
 				String writeLine = word ;

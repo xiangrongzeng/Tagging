@@ -22,8 +22,8 @@ public class TagMain {
 		data.saveToFile();
 		
 		System.out.println("调用viterbi算法计算中。。。 ");
-		HashMap<String, Double> confusionMatrix = data.getConfusionMatrix();
-		HashMap<String, HashMap<String, Double>> transformMatrix = data.getTransformMatrix();
+		HashMap<String, Double> confusionMatrix = data.getTransformMatrix();
+		HashMap<String, HashMap<String, Double>> transformMatrix = data.getConfusionMatrix();
 //	String[] words = new String[7];
 //	words[0] = "123建国";
 //	words[1] = "以来";
