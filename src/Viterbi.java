@@ -26,7 +26,7 @@ public class Viterbi {
 	}
 	
 	
-	public String[] calc(){
+	public String[] calc() throws Exception{
 		double[] score = new double[1];
 		for(int i = 0; i < words.length; i++){
 			double[] newScore = calcOne(words, i, score);		
@@ -45,7 +45,7 @@ public class Viterbi {
 	}
 	
 	private double[] calcOne(String[] words, int wordNumber, double[] score){		
-		int wordTagsNumber = transformMatrix.get(words[wordNumber]).size();
+//		int wordTagsNumber = transformMatrix.get(words[wordNumber]).size();
 		HashMap<String, Double> wordTags = 
 				transformMatrix.get(words[wordNumber]);
 		int[] wordPriorTagRecords = new int[wordTags.size()]; // 记录前一个状态
@@ -90,7 +90,7 @@ public class Viterbi {
 		}
 	}
 	
-	private String[] traceBack(double[] score){
+	private String[] traceBack(double[] score) throws Exception{
 		int maxIndex = -1;
 		double maxValue = -1000000;
 		for(int i = 0; i < score.length; i++){
