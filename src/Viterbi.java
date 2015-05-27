@@ -26,7 +26,7 @@ public class Viterbi {
 	}
 	
 	
-	public void calc(){
+	public String[] calc(){
 		double[] score = new double[1];
 		for(int i = 0; i < words.length; i++){
 			double[] newScore = calcOne(words, i, score);		
@@ -40,7 +40,8 @@ public class Viterbi {
 		for (int i = 0; i < words.length; i++) {
 			result += words[i] + "/" + tags[i] + " ";
 		}
-		System.out.println(result);
+//		System.out.println(result);
+		return tags;
 	}
 	
 	private double[] calcOne(String[] words, int wordNumber, double[] score){		
